@@ -9,7 +9,7 @@ export const create = async (req, res) => {
     const timeLog = new TimeLog({
         taskDescription,
         hoursWorked,
-        dateWorked,
+        dateWorked: dateWorked ? dayjs(dateWorked) : null,
         project
     });
 
