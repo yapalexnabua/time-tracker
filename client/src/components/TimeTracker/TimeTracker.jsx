@@ -6,8 +6,9 @@ import { logTime } from "../../api/timeLogApi";
 import ProjectSelect from "../ProjectSelect/ProjectSelect";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import PropTypes from 'prop-types';
 
-const TimeTracker = () => {
+const TimeTracker = ({ onTimeLogged }) => {
     const logTimeMutation = useMutation((timeLogData) => logTime(timeLogData));
     
     const formik = useFormik({
@@ -21,7 +22,7 @@ const TimeTracker = () => {
             try {
                 const secondsToHours = parseFloat(seconds / 59).toFixed(2);
 
-                await logTimeMutation.mutateAsync({
+                const timeLog = await logTimeMutation.mutateAsync({
                     taskDescription,
                     projectId: project?.value,
                     hoursWorked: hours + parseFloat(secondsToHours)
@@ -30,6 +31,10 @@ const TimeTracker = () => {
                 formik.resetForm();
 
                 toast.success('Time logged successfully');
+
+                if (onTimeLogged) {
+                    onTimeLogged(timeLog);
+                }
             } catch (error) {
                 console.error(error);
 
@@ -74,6 +79,10 @@ const TimeTracker = () => {
             <ToastContainer />
         </div>
     )
+};
+
+TimeTracker.propTypes = {
+    onTimeLogged: PropTypes.func
 };
 
 export default TimeTracker;

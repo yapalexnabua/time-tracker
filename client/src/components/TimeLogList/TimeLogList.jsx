@@ -8,7 +8,7 @@ import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import './TimeLogList.css';
 
-const TimeLogList = () => {
+const TimeLogList = ({ newTimeLog }) => {
     const [filters, setFilters] = useState({
         from: null,
         to: null,
@@ -26,7 +26,7 @@ const TimeLogList = () => {
         (async () => {
             await refetch();
         })();
-    }, [filters]);
+    }, [filters, newTimeLog]);
 
     const handleDateRangeSelect = (dateRange) => {
         setFilters((prevState) => ({
