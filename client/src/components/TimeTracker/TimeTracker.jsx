@@ -1,15 +1,18 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getProjects } from "../../api/projectsApi";
 import Select from 'react-select';
 import TimePicker from '../TimePicker/TimePicker';
 import './TimeTracker.css';
 import { useFormik } from "formik";
+import { logTime } from "../../api/timeLogApi";
 
 const TimeTracker = () => {
     const { data: projects = [], isLoading } = useQuery('projects', getProjects, {
         retry: false,
         refetchOnWindowFocus: false
     });
+
+    const logTimeMutation = useMutation((timeLogData) => logTime(timeLogData));
     
     const formik = useFormik({
         initialValues: {
@@ -18,8 +21,18 @@ const TimeTracker = () => {
             hours: '00',
             seconds: '00'
         },
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async ({ taskDescription, project, hours, seconds }) => {
+            try {
+                const secondsToHours = parseFloat(seconds / 59).toFixed(2);
+
+                await logTimeMutation.mutateAsync({
+                    taskDescription,
+                    projectId: project.value,
+                    hoursWorked: hours + parseFloat(secondsToHours)
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
     });
 
@@ -59,7 +72,8 @@ const TimeTracker = () => {
                        onHoursChange={(value) => formik.setFieldValue('hours', value)}
                        onSecondsChange={(value) => formik.setFieldValue('seconds', value)} />
                     
-                    <button className="col-span-1 border border-black h-full w-full">Submit</button>
+                    <button className="col-span-1 border border-black h-full w-full"
+                        type="submit">Submit</button>
                 </div>
             </form>
         </div>

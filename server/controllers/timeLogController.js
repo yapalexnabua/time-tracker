@@ -5,13 +5,15 @@ import dayjs from "dayjs";
 export const create = async (req, res) => {
     const { taskDescription, hoursWorked, dateWorked, projectId } = req.body;
     const project = await Project.findById(projectId);
-
-    const timeLog = new TimeLog({
+    const timeLogData = {
         taskDescription,
         hoursWorked,
-        dateWorked: dateWorked ? dayjs(dateWorked) : null,
         project
-    });
+    };
+    if (dateWorked) {
+        timeLogData['dateWorked'] = dayjs(dateWorked);
+    }
+    const timeLog = new TimeLog(timeLogData);
 
     const result = await timeLog.save();
 
