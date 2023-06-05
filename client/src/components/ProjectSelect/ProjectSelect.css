@@ -1,0 +1,10 @@
+.react-select-container > div:first-of-type {
+    border-color: black;
+    border-radius: 0;
+}
+
+@media (min-width: 1280px) {
+    .react-select-container > div:first-of-type {
+        border-right: 0;
+    }
+}

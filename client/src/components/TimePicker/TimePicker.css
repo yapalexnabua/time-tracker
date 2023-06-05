@@ -10,3 +10,9 @@ input[type='number'] {
 .timepicker {
     border: 1px solid #000;
 }
+
+@media (min-width: 1280px) {
+    .timepicker {
+        border-right: 0;
+    }
+}

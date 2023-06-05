@@ -2,6 +2,7 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import { useQuery } from "react-query";
 import { getProjects } from "../../api/projectsApi";
+import './ProjectSelect.css';
 
 const ProjectSelect = ({ onChange, value, className }) => {
     const { data: projects = [] } = useQuery('projects', getProjects, {

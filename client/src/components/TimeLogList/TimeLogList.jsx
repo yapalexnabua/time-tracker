@@ -48,7 +48,7 @@ const TimeLogList = () => {
 
     return (
         <div className="time-log-list mt-4">
-            <div className="flex items-center mb-4">
+            <div className="xl:flex items-center mb-4">
                 <span className="mr-2">Filter by:</span>
 
                 <ProjectSelect value={filters.project}
@@ -56,10 +56,10 @@ const TimeLogList = () => {
                         ...prevState,
                         project
                     }))}
-                    className="mr-2" />
+                    className="xl:mr-2 project-filter mb-2 xl:mb-0" />
 
                 <DateRangePicker 
-                    className="h-full"
+                    className="h-full w-full xl:w-min"
                     value={getDateRangeValue()}
                     onChange={handleDateRangeSelect} />
             </div>
@@ -72,9 +72,10 @@ const TimeLogList = () => {
                     ) : (
                         timeLogList.map((timeLog) => {
                             return (
-                                <div className="grid grid-cols-3 p-4 border border-black mb-4" key={timeLog._id}>
+                                <div className="xl:grid grid-cols-3 p-4 border border-black mb-4" key={timeLog._id}>
                                     <div>
-                                        Project: {timeLog.project.name}
+                                        <p>Project: {timeLog.project.name}</p>
+                                        <p className="text-sm">{timeLog.taskDescription}</p>
                                     </div>
                                     <div>
                                         Hours Worked: {timeLog.hoursWorked}

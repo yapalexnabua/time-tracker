@@ -1,3 +1,9 @@
 .react-calendar__tile--active {
     background-color: cornflowerblue !important;
 }
+
+@media (min-width: 1280px) {
+    .project-filter {
+        border-right: 1px solid #000;
+    }
+}

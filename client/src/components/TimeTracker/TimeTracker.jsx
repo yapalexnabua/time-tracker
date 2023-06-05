@@ -4,6 +4,7 @@ import './TimeTracker.css';
 import { useFormik } from "formik";
 import { logTime } from "../../api/timeLogApi";
 import ProjectSelect from "../ProjectSelect/ProjectSelect";
+
 const TimeTracker = () => {
     const logTimeMutation = useMutation((timeLogData) => logTime(timeLogData));
     
@@ -23,6 +24,8 @@ const TimeTracker = () => {
                     projectId: project.value,
                     hoursWorked: hours + parseFloat(secondsToHours)
                 });
+
+                formik.resetForm();
             } catch (error) {
                 console.error(error);
             }
@@ -32,29 +35,31 @@ const TimeTracker = () => {
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
-                <div className="grid grid-cols-7 items-center">
-                    <div className="col-span-3 border border-black h-full">
+                <div className="xl:grid xl:grid-cols-7 items-center">
+                    <div className="col-span-3 border border-black xl:border-r-0 h-full">
                         <input type="text" 
                             placeholder="My awesome task"
-                            className="w-full h-full px-2"
+                            className="w-full h-full px-2 py-2 xl:py-0"
                             name="taskDescription"
                             value={formik.values.taskDescription}
                             onChange={formik.handleChange} />
                     </div>
 
                     <ProjectSelect
-                        className="col-span-2"
+                        className="xl:col-span-2"
                         value={formik.values.project} 
                         onChange={(selected) => formik.setFieldValue('project', selected)} />
 
-                    <TimePicker className="col-span-1 h-full"
+                    <TimePicker className="xl:col-span-1 h-full py-2 xl:py-0"
                        valueHours={formik.values.hours}
                        valueSeconds={formik.values.seconds}
                        onHoursChange={(value) => formik.setFieldValue('hours', value)}
                        onSecondsChange={(value) => formik.setFieldValue('seconds', value)} />
                     
-                    <button className="col-span-1 border border-black h-full w-full"
-                        type="submit">Submit</button>
+                    <div className="xl:col-span-1 h-full">
+                        <button className="border border-black h-full w-full block py-2 xl:py-0"
+                            type="submit">Submit</button>
+                    </div>
                 </div>
             </form>
         </div>
