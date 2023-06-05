@@ -1,19 +1,42 @@
 import { useQuery } from "react-query";
 import { listTimeLogs } from "../../api/timeLogApi";
 import dayjs from 'dayjs';
+import ProjectSelect from "../ProjectSelect/ProjectSelect";
+import { useState, useEffect } from "react";
 
 const TimeLogList = () => {
-    const { data: timeLogList = [], isFetching, refetch } = useQuery('timeLogList', listTimeLogs, {
+    const [filters, setFilters] = useState({
+        from: null,
+        to: null,
+        project: {}
+    });
+
+    const { data: timeLogList = [], isFetching, refetch } = useQuery('timeLogList', () => listTimeLogs({
+        ...filters,
+        projectId: filters.project.value || null
+    }), {
         retry: false,
         refetchOnWindowFocus: false
     });
 
+    useEffect(() => {
+        (async () => {
+            await refetch();
+        })();
+    }, [filters]);
+
     if (isFetching) {
-        return <p>Loading time log list...</p>
+        return <p className="py-4">Loading time log list...</p>
     }
 
     return (
         <div className="time-log-list mt-4">
+            <ProjectSelect value={filters.project}
+                onChange={(project) => setFilters((prevState) => ({
+                    ...prevState,
+                    project
+                }))} />
+
             {!timeLogList.length && <p>No time logs...</p>}
 
             {

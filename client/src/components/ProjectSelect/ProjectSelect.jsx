@@ -25,9 +25,9 @@ const ProjectSelect = ({ onChange, value }) => {
 
 ProjectSelect.propTypes = {
     onChange: PropTypes.func.isRequired,
-    value: Project.shape({
-        value: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired
+    value: PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string
     })
 };
 

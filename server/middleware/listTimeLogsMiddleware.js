@@ -3,7 +3,7 @@ import Joi from 'joi';
 const schema = Joi.object({
     from: Joi.date().optional(),
     to: Joi.date().optional(),
-    productId: Joi.string().optional(),
+    projectId: Joi.string().optional(),
 });
 
 export default async (req, res, next) => {
