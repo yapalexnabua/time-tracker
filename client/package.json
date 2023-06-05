@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wojtekmaj/react-daterange-picker": "^5.2.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "formik": "^2.4.1",

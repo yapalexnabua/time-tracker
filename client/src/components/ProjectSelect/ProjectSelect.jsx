@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from "react-query";
 import { getProjects } from "../../api/projectsApi";
 
-const ProjectSelect = ({ onChange, value }) => {
+const ProjectSelect = ({ onChange, value, className }) => {
     const { data: projects = [] } = useQuery('projects', getProjects, {
         retry: false,
         refetchOnWindowFocus: false
@@ -16,7 +16,7 @@ const ProjectSelect = ({ onChange, value }) => {
                 label: project.name
             }))
         } 
-        className="col-span-2 react-select-container"
+        className={`react-select-container ${className}`}
         placeholder="Select a project..."
         value={value}
         onChange={onChange} />
@@ -28,7 +28,8 @@ ProjectSelect.propTypes = {
     value: PropTypes.shape({
         value: PropTypes.string,
         label: PropTypes.string
-    })
+    }),
+    className: PropTypes.string
 };
 
 export default ProjectSelect;

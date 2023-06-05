@@ -3,17 +3,21 @@ import { listTimeLogs } from "../../api/timeLogApi";
 import dayjs from 'dayjs';
 import ProjectSelect from "../ProjectSelect/ProjectSelect";
 import { useState, useEffect } from "react";
+import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import './TimeLogList.css';
 
 const TimeLogList = () => {
     const [filters, setFilters] = useState({
         from: null,
         to: null,
-        project: {}
+        project: null
     });
 
     const { data: timeLogList = [], isFetching, refetch } = useQuery('timeLogList', () => listTimeLogs({
         ...filters,
-        projectId: filters.project.value || null
+        projectId: filters.project?.value || null
     }), {
         retry: false,
         refetchOnWindowFocus: false
@@ -25,36 +29,64 @@ const TimeLogList = () => {
         })();
     }, [filters]);
 
-    if (isFetching) {
-        return <p className="py-4">Loading time log list...</p>
+    const handleDateRangeSelect = (dateRange) => {
+        setFilters((prevState) => ({
+            ...prevState,
+            from: dayjs(dateRange[0]).format('YYYY-MM-DD'),
+            to: dayjs(dateRange[1]).format('YYYY-MM-DD'),
+        }));
+    }
+
+    // bad design i know
+    const getDateRangeValue = () => {
+        if (filters.from && filters.to) {
+            return [dayjs(filters.from), dayjs(filters.to)];
+        }
+
+        return [null, null];
     }
 
     return (
         <div className="time-log-list mt-4">
-            <ProjectSelect value={filters.project}
-                onChange={(project) => setFilters((prevState) => ({
-                    ...prevState,
-                    project
-                }))} />
+            <div className="flex items-center mb-4">
+                <span className="mr-2">Filter by:</span>
 
-            {!timeLogList.length && <p>No time logs...</p>}
+                <ProjectSelect value={filters.project}
+                    onChange={(project) => setFilters((prevState) => ({
+                        ...prevState,
+                        project
+                    }))}
+                    className="mr-2" />
 
+                <DateRangePicker 
+                    className="h-full"
+                    value={getDateRangeValue()}
+                    onChange={handleDateRangeSelect} />
+            </div>
             {
-                timeLogList.map((timeLog) => {
-                    return (
-                        <div className="grid grid-cols-3 p-4 border border-black mb-4" key={timeLog._id}>
-                            <div>
-                                Project: {timeLog.project.name}
-                            </div>
-                            <div>
-                                Hours Worked: {timeLog.hoursWorked}
-                            </div>
-                            <div>
-                                Date: {dayjs(timeLog.dateWorked).format('MMM D, YYYY')}
-                            </div>
-                        </div>
+                isFetching ? (
+                    <div>Loading time logs...</div>
+                ) : (
+                    !timeLogList.length ? (
+                        <p>No time logs</p>
+                    ) : (
+                        timeLogList.map((timeLog) => {
+                            return (
+                                <div className="grid grid-cols-3 p-4 border border-black mb-4" key={timeLog._id}>
+                                    <div>
+                                        Project: {timeLog.project.name}
+                                    </div>
+                                    <div>
+                                        Hours Worked: {timeLog.hoursWorked}
+                                    </div>
+                                    <div>
+                                        Date: {dayjs(timeLog.dateWorked).format('MMM D, YYYY')}
+                                    </div>
+                                </div>
+                            )
+                        })
                     )
-                })
+                )
             }
         </div>
     );

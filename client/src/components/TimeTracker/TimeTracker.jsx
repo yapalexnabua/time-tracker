@@ -4,7 +4,6 @@ import './TimeTracker.css';
 import { useFormik } from "formik";
 import { logTime } from "../../api/timeLogApi";
 import ProjectSelect from "../ProjectSelect/ProjectSelect";
-
 const TimeTracker = () => {
     const logTimeMutation = useMutation((timeLogData) => logTime(timeLogData));
     
@@ -44,6 +43,7 @@ const TimeTracker = () => {
                     </div>
 
                     <ProjectSelect
+                        className="col-span-2"
                         value={formik.values.project} 
                         onChange={(selected) => formik.setFieldValue('project', selected)} />
 
