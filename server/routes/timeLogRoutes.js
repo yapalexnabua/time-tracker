@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as timeLogController from '../controllers/timeLogController';
+import * as timeLogController from '../controllers/timeLogController.js';
 
 const router = Router();
 
