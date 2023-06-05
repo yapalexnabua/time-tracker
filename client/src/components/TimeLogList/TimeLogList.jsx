@@ -19,7 +19,6 @@ const TimeLogList = () => {
         ...filters,
         projectId: filters.project?.value || null
     }), {
-        retry: false,
         refetchOnWindowFocus: false
     });
 
@@ -40,10 +39,14 @@ const TimeLogList = () => {
     // bad design i know
     const getDateRangeValue = () => {
         if (filters.from && filters.to) {
-            return [dayjs(filters.from), dayjs(filters.to)];
+            console.log(
+                dayjs(filters.from).format('MM/DD/YYYY'),
+                dayjs(filters.to).format('MM/DD/YYYY')
+            )
+            return [dayjs(filters.from).format('MM/DD/YYYY'), dayjs(filters.to).format('MM/DD/YYYY')];
         }
 
-        return [null, null];
+        return null;
     }
 
     return (
@@ -61,7 +64,8 @@ const TimeLogList = () => {
                 <DateRangePicker 
                     className="h-full w-full xl:w-min"
                     value={getDateRangeValue()}
-                    onChange={handleDateRangeSelect} />
+                    onChange={handleDateRangeSelect}
+                    clearIcon={null} />
             </div>
             {
                 isFetching ? (
@@ -72,10 +76,10 @@ const TimeLogList = () => {
                     ) : (
                         timeLogList.map((timeLog) => {
                             return (
-                                <div className="xl:grid grid-cols-3 p-4 border border-black mb-4" key={timeLog._id}>
+                                <div className="xl:grid grid-cols-3 p-4 border border-black mb-4 items-center" key={timeLog._id}>
                                     <div>
                                         <p>Project: {timeLog.project.name}</p>
-                                        <p className="text-sm">{timeLog.taskDescription}</p>
+                                        <p className="text-sm">{`${timeLog.taskDescription.length > 50 ? timeLog.taskDescription.substring(0, 50) + '...' : timeLog.taskDescription}`}</p>
                                     </div>
                                     <div>
                                         Hours Worked: {timeLog.hoursWorked}

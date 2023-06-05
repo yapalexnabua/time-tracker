@@ -46,7 +46,7 @@ export const list = async (req, res) => {
             };
         }
 
-        const timeLogs = await TimeLog.find(conditions);
+        const timeLogs = await TimeLog.find(conditions).sort({dateWorked: 'desc'});
     
         res.status(200).json({
             message: 'Some time log list',

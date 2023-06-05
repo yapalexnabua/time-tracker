@@ -4,6 +4,8 @@ import './TimeTracker.css';
 import { useFormik } from "formik";
 import { logTime } from "../../api/timeLogApi";
 import ProjectSelect from "../ProjectSelect/ProjectSelect";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const TimeTracker = () => {
     const logTimeMutation = useMutation((timeLogData) => logTime(timeLogData));
@@ -21,13 +23,19 @@ const TimeTracker = () => {
 
                 await logTimeMutation.mutateAsync({
                     taskDescription,
-                    projectId: project.value,
+                    projectId: project?.value,
                     hoursWorked: hours + parseFloat(secondsToHours)
                 });
 
                 formik.resetForm();
+
+                toast.success('Time logged successfully');
             } catch (error) {
                 console.error(error);
+
+                if (error?.response?.data?.error?.details) {
+                    error?.response?.data?.error?.details.forEach(({ message }) => toast.error(message));
+                }
             }
         }
     });
@@ -62,6 +70,8 @@ const TimeTracker = () => {
                     </div>
                 </div>
             </form>
+
+            <ToastContainer />
         </div>
     )
 };
