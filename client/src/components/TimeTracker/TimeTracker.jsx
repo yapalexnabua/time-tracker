@@ -37,9 +37,7 @@ const TimeTracker = () => {
     });
 
     if (isLoading) {
-        return <div className="h-full w-full">
-            <p>Loading Time Tracker...</p>
-        </div>;
+        return <p>Loading Time Tracker...</p>;
     }
 
     return (
