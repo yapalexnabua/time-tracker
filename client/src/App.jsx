@@ -1,5 +1,5 @@
 import TimeTracker from './components/TimeTracker/TimeTracker';
-import TimeLogList from './components/TimeLogLIst/TimeLogList';
+import TimeLogList from './components/TimeLogList/TimeLogList';
 import './App.css';
 
 const App = () => {
