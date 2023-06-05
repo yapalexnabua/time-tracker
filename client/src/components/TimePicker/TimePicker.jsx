@@ -3,20 +3,24 @@ import './TimePicker.css';
 
 const TimePicker = ({ className, onHoursChange, onSecondsChange }) => {
     return (
-        <div className={`flex items-center timepicker w-min ${className}`}>
-            <input type="number"
-                step="1"
-                placeholder="00"
-                className="hours-input w-8 text-center"
-                onChange={onHoursChange} />
+        <div className={`grid grid-cols-5 items-center timepicker ${className}`}>
+            <div className="col-span-2">
+                <input type="number"
+                    step="1"
+                    placeholder="00"
+                    className="hours-input text-center w-full"
+                    onChange={onHoursChange} />
+            </div>
 
-            <span>:</span>
+            <span className="col-span-1 text-center">:</span>
 
-            <input type="number"
-                step="1"
-                placeholder="00"
-                className="seconds-input w-8 text-center"
-                onChange={onSecondsChange} />
+            <div className="col-span-2">
+                <input type="number"
+                    step="1"
+                    placeholder="00"
+                    className="seconds-input text-center w-full"
+                    onChange={onSecondsChange} />
+            </div>
         </div>
     );
 };
