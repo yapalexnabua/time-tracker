@@ -14,6 +14,8 @@ const TimeLogList = () => {
 
     return (
         <div className="time-log-list mt-4">
+            {!timeLogList.length && <p>No time logs...</p>}
+
             {
                 timeLogList.map((timeLog) => {
                     return (

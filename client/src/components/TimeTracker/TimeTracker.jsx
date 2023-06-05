@@ -1,17 +1,11 @@
-import { useMutation, useQuery } from "react-query";
-import { getProjects } from "../../api/projectsApi";
-import Select from 'react-select';
+import { useMutation } from "react-query";
 import TimePicker from '../TimePicker/TimePicker';
 import './TimeTracker.css';
 import { useFormik } from "formik";
 import { logTime } from "../../api/timeLogApi";
+import ProjectSelect from "../ProjectSelect/ProjectSelect";
 
 const TimeTracker = () => {
-    const { data: projects = [], isLoading } = useQuery('projects', getProjects, {
-        retry: false,
-        refetchOnWindowFocus: false
-    });
-
     const logTimeMutation = useMutation((timeLogData) => logTime(timeLogData));
     
     const formik = useFormik({
@@ -36,10 +30,6 @@ const TimeTracker = () => {
         }
     });
 
-    if (isLoading) {
-        return <p>Loading Time Tracker...</p>;
-    }
-
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
@@ -53,15 +43,8 @@ const TimeTracker = () => {
                             onChange={formik.handleChange} />
                     </div>
 
-                    <Select options={
-                            projects.map(project => ({
-                                value: project._id,
-                                label: project.name
-                            }))
-                        } 
-                        className="col-span-2 react-select-container"
-                        placeholder="Select a project..."
-                        value={formik.values.project}
+                    <ProjectSelect
+                        value={formik.values.project} 
                         onChange={(selected) => formik.setFieldValue('project', selected)} />
 
                     <TimePicker className="col-span-1 h-full"
