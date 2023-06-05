@@ -1,5 +1,6 @@
 import express from 'express';
 import timeLogRoutes from './routes/timeLogRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/time-logs', timeLogRoutes);
+app.use('/api/projects', projectRoutes);
 
 (async () => {
     try {
